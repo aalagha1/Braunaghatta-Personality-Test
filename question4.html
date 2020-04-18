@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="utf-8">
+    <title>Braunaghatta Personality Test</title>
+  </head>
+  <body>
+    <h2>How likely are you to ask for help?</h2>
+    <br>
+    <button class="question1buttons" type="button" onclick="waitandalert()">Very likely</button>
+    <br>
+    <button class="question1buttons" type="button" onclick="waitandalert()">Somewhat likely</button>
+    <br>
+    <button class="question1buttons" type="button" onclick="waitandalert()">Neutral</button>
+    <br>
+    <button class="question1buttons" type="button" onclick="waitandalert()">Somewhat unlikely</button>
+    <br>
+    <button class="question1buttons" type="button" onclick="waitandalert()">Very unlikely</button>
+
+    <script type="text/javascript">
+      document.documentElement.style.cursor= "wait";
+      setTimeout(function () {document.documentElement.style.cursor="default";},5000);
+        function waitandalert() {
+          document.documentElement.style.cursor= "wait";
+          setTimeout(function() {
+          alert("Reminder: please answer truthfully. "
+          + "The amount of time taken to answer questions is one of the many parameters that the BPT engine uses to perform its analysis. "
+          + "Focused contemplation of these questions will ensure more accurate results. "
+          + "Press OK to continue to the next question.");
+          document.documentElement.style.cursor= "default";
+          window.location.href='question5.html';
+          }, 3000);
+        }
+    </script>
+
+
+  </body>
+</html>
