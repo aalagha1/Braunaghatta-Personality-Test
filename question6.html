@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="utf-8">
+    <title>Braunaghatta Personality Test</title>
+  </head>
+  <body>
+    <h2>Large crowds give you anxiety</h2>
+    <br>
+
+    <button class="question1buttons" type="button" onclick="waitandglitchpage()">Very true</button>
+    <br>
+    <button class="question1buttons" type="button" onclick="waitandglitchpage()">Somewhat true</button>
+    <br>
+    <button class="question1buttons" type="button" onclick="waitandglitchpage()">Neutral</button>
+    <br>
+    <button class="question1buttons" type="button" onclick="waitandglitchpage()">I don't mind them</button>
+    <br>
+    <button class="question1buttons" type="button" onclick="waitandglitchpage()">I love large crowds</button>
+
+    <script type="text/javascript">
+      function waitandglitchpage() {
+        document.documentElement.style.cursor= "wait";
+        setTimeout(function() {
+        document.documentElement.style.cursor= "default";
+        window.location.href='question6glitchpage.html';
+      }, 1200);
+      }
+    </script>
+  </body>
+</html>
