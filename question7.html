@@ -9,23 +9,21 @@
     <h2>You prefer a few close friends rather than many acquaintances</h2>
     <br>
 
-    <button class="question1buttons" type="button" onclick="waitandalert2()">Very true</button>
+    <button class="question1buttons" type="button" onclick="waitandalert2()">Definitely</button>
     <br>
-    <button class="question1buttons" type="button" onclick="waitandalert2()">Somewhat true</button>
+    <button class="question1buttons" type="button" onclick="waitandalert2()">Leaning towards yes</button>
     <br>
-    <button class="question1buttons" type="button" onclick="waitandalert2()">Neutral</button>
+    <button class="question1buttons" type="button" onclick="waitandalert2()">In the middle</button>
     <br>
-    <button class="question1buttons" type="button" onclick="waitandalert2()">Somewhat untrue</button>
+    <button class="question1buttons" type="button" onclick="waitandalert2()">Leaning towards no</button>
     <br>
-    <button class="question1buttons" type="button" onclick="waitandalert2()">Very untrue</button>
+    <button class="question1buttons" type="button" onclick="waitandalert2()">Definitely not</button>
 
     <script type="text/javascript">
       function waitandalert2() {
         document.documentElement.style.cursor= "wait";
         setTimeout(function() {
-        alert("The BPT neural network is experiencing difficulty in processing data. "
-        + "Processing speed is dependent on the complexity of the analysis necessary for the test subject. "
-        + "We apologize for the delay. Press OK to continue to the next question.");
+        alert("The BPT neural network algorithm cannot function correctly if you do not answer truthfully – please answer truthfully");
         document.documentElement.style.cursor= "default";
         window.location.href='question8.html';
       }, 2400);
