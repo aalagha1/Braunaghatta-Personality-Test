@@ -3,56 +3,243 @@
   <head>
     <meta charset="utf-8">
     <title>Braunaghatta Personality Test</title>
+    <style style="text/css">
+      .glitchscroll{
+        background-color: black;
+        color: #33FF00;
+
+        /* Starting position */
+        transform:translateY(0%);
+        /*browser fixes*/
+        -moz-transform:translateY(0%);
+        -webkit-transform:translateY(0%);
+
+        /* Apply animation to this element and set speed*/
+        animation: scroll-up 7s steps(70, jump-start) infinite;
+        /*browser fixes*/
+        -moz-animation: scroll-up 7s steps(70, jump-start) infinite;
+        -webkit-animation: scroll-up 7s steps(70, jump-start) infinite;
+      }
+
+      /* (define the animation) */
+      @keyframes scroll-up {
+        0% {
+        transform: translateY(0%);
+        }
+        100% {
+        transform: translateY(-100%);
+        }
+      }
+
+      /*browser fixes*/
+      @-moz-keyframes scroll-up {
+        0%   { -moz-transform: translateY(0%); }
+        100% { -moz-transform: translateY(-100%); }
+      }
+      @-webkit-keyframes scroll-up {
+        0%   { -webkit-transform: translateY(0%); }
+        100% { -webkit-transform: translateY(-100%); }
+      }
+    </style>
   </head>
   <body>
-    <pre>
-      &lt;!DOCTYPE html&gt;
-      &lt;html lang="en" dir="ltr"&gt;
-        &lt;head&gt;
-          &lt;link rel="stylesheet" href="style.css"&gt;
-          &lt;meta charset="utf-8"&gt;
-          &lt;title>Braunaghatta Personality Test&lt;/title&gt;
-        &lt;/head&gt;
-        &lt;body&gt;
-          &lt;h2>You prefer a few close friends rather than many acquaintances&lt;/h2&gt;
-          &lt;br&gt;
-          &lt;button class="question1buttons" type="button" onclick="window.location.href= 'question8.html';">Very true&lt;/button&gt;
-          &lt;br&gt;
-          &lt;button class="question1buttons" type="button" onclick="window.location.href= 'question8.html';">Somewhat true&lt;/button&gt;
-          &lt;br&gt;
-          &lt;button class="question1buttons" type="button" onclick="window.location.href= 'question8.html';">Neutral&lt;/button&gt;
-          &lt;br&gt;
-          &lt;button class="question1buttons" type="button" onclick="window.location.href= 'question8.html';">Somewhat untrue&lt;/button&gt;
-          &lt;br&gt;
-          &lt;button class="question1buttons" type="button" onclick="window.location.href= 'question8.html';">Very untrue&lt;/button&gt;
-        &lt;/body&gt;
-      &lt;/html&gt;
-      &lt;!DOCTYPE html&gt;
-      &lt;html lang="en" dir="ltr"&gt;
-        &lt;head&gt;
-          &lt;link rel="stylesheet" href="style.css"&gt;
-          &lt;meta charset="utf-8"&gt;
-          &lt;title>Braunaghatta Personality Test&lt;/title&gt;
-        &lt;/head&gt;
-        &lt;body&gt;
-          &lt;h2>You prefer a few close friends rather than many acquaintances&lt;/h2&gt;
-          &lt;br&gt;
-          &lt;button class="question1buttons" type="button" onclick="window.location.href= 'question8.html';">Very true&lt;/button&gt;
-          &lt;br&gt;
-          &lt;button class="question1buttons" type="button" onclick="window.location.href= 'question8.html';">Somewhat true&lt;/button&gt;
-          &lt;br&gt;
-          &lt;button class="question1buttons" type="button" onclick="window.location.href= 'question8.html';">Neutral&lt;/button&gt;
-          &lt;br&gt;
-          &lt;button class="question1buttons" type="button" onclick="window.location.href= 'question8.html';">Somewhat untrue&lt;/button&gt;
-          &lt;br&gt;
-          &lt;button class="question1buttons" type="button" onclick="window.location.href= 'question8.html';">Very untrue&lt;/button&gt;
-        &lt;/body&gt;
-      &lt;/html&gt;
-    </pre>
+    <div class="glitchscroll">
+      <pre>
+        import json
+        import re
+                  import numpy as np
+                  from matplotlib import pyplot as plt
+                  import string
+                  from heapq import nlargest, nsmallest
+                            # Parse speeches.json data
+                            speeches = []
+                            with open('speeches.json') as f:
+                               for line in f:
+                               speeches.append(json.loads(line))
+
+        # Slightly altered from given
+        def clean_and_split(s):
+         # encode to UTF-8, convert to lowercase and translate all hyphens and
+         # punctuation to whitespace
+                       translation = str.maketrans('', '', string.punctuation)
+                       s = s.lower().replace('-',' ') # replace \r\n
+                       s = s.translate(translation)
+                       s = re.sub('(\r\n)+',' ',s)
+                             # replace whitespace substrings with one whitespace and remove
+                             # leading/trailing whitespaces
+                                   s = re.sub(' +',' ',s.strip())
+                                   return s.split(' ')
+        # Gets either global vocab or speech specific vocab
+                                    def get_vocab(speeches, check_all=True, specific=0):
+                                     vocab = dict()
+                       if check_all:
+                       for speech in speeches:
+                       text = clean_and_split(speech['text'])
+                                 for word in text:
+                                       if word in vocab:
+                                 vocab[word] = vocab[word] + 1
+                                 else:
+                                     vocab[word] = 1
+                                    4/18/2020 HW2_P4_JeffBraun
+                                    localhost:8888/nbconvert/html/ML/HW2/HW2_P4_JeffBraun.ipynb?download=false 3/29
+                                     else:
+                                                       text = clean_and_split(speeches[specific]['text'])
+                                                       for word in text:
+                                                       if word in vocab:
+                                                       vocab[word] = vocab[word] + 1
+                                     else:
+                                     vocab[word] = 1
+                                     return vocab
+                                    # Get some info from vocab to make decision on how to clean it
+                                    def get_info(step, vocab):
+                                     values = np.array(list(vocab.values()))
+                                     print("There are " + str(values.shape[0]) + " words in this vocabulary")
+                                     most_common = nlargest(5, vocab, key = vocab.get)
+         print("The 5 most common words are " + str(most_common))
+         least_common = nsmallest(5, vocab, key = vocab.get)
+                 print("The 5 least common words are " + str(least_common))
+                 for i in range(int(100/(step))):
+         perc = int(step * (i + 1))
+                 print("The " + str(perc) + "th percentile is: " + str(np.percentile(values,perc)))
+                                   print("\n")
+                                  # Cleave off words from the vocab if they aren't within given range
+                                  def clean_vocab(less_than, more_than, vocab):
+                         to_remove = []
+                         for word in vocab:
+                             if int(vocab[word]) < less_than or int(vocab[word]) > more_than:
+                             to_remove.append(word)
+                                   for key in to_remove:
+                                   del vocab[key]
+                                   return vocab
+                # Create tf_idf matrix from given global vocab and speeches
+                def get_tf_idf(speeches, vocab):
+                 num_docs = len(speeches)
+                       num_words = len(vocab)
+                       W = np.zeros((num_docs, num_words))
+                                   vocabs = []
+         for i in range(num_docs):
+         vocabs.append(get_vocab(speeches, check_all=False, specific=i))
+                  4/18/2020 HW2_P4_JeffBraun
+                  localhost:8888/nbconvert/html/ML/HW2/HW2_P4_JeffBraun.ipynb?download=false 4/29
+         index = 0
+               for word in vocab:
+               for i in range(num_docs):
+         speech_vocab = vocabs[i]
+                       if word in speech_vocab:
+                       W[i,index] = speech_vocab[word]
+                       else:
+                       W[i,index] = 0
+                       index += 1
+               t = np.log(num_docs / np.count_nonzero(W,axis=0))
+               t = np.repeat(np.expand_dims(t,axis=0),num_docs,axis=0)
+                       W = np.multiply(W,t)
+                       return W
+                      vocab = get_vocab(speeches)
+                                    get_info(1, vocab)
+                                    vocab = clean_vocab(50, 1000, vocab)
+                                    get_info(5, vocab)
+                                    tf_idf = get_tf_idf(speeches, vocab)
+                      import json
+                      import re
+                      import numpy as np
+                                    from matplotlib import pyplot as plt
+                                    import string
+                                    from heapq import nlargest, nsmallest
+        # Parse speeches.json data
+        speeches = []
+        with open('speeches.json') as f:
+         for line in f:
+         speeches.append(json.loads(line))
+
+        # Slightly altered from given
+        def clean_and_split(s):
+         # encode to UTF-8, convert to lowercase and translate all hyphens and
+         # punctuation to whitespace
+         translation = str.maketrans('', '', string.punctuation)
+                                         s = s.lower().replace('-',' ') # replace \r\n
+                                         s = s.translate(translation)
+               s = re.sub('(\r\n)+',' ',s)
+               # replace whitespace substrings with one whitespace and remove
+               # leading/trailing whitespaces
+                           s = re.sub(' +',' ',s.strip())
+                           return s.split(' ')
+                                        # Gets either global vocab or speech specific vocab
+                                        def get_vocab(speeches, check_all=True, specific=0):
+                                         vocab = dict()
+                                         if check_all:
+                                         for speech in speeches:
+         text = clean_and_split(speech['text'])
+         for word in text:
+         if word in vocab:
+                     vocab[word] = vocab[word] + 1
+                     else:
+                     vocab[word] = 1
+                                      4/18/2020 HW2_P4_JeffBraun
+                                      localhost:8888/nbconvert/html/ML/HW2/HW2_P4_JeffBraun.ipynb?download=false 3/29
+                                      else:
+                                                               text = clean_and_split(speeches[specific]['text'])
+                                                               for word in text:
+                                                               if word in vocab:
+         vocab[word] = vocab[word] + 1
+         else:
+         vocab[word] = 1
+         return vocab
+                # Get some info from vocab to make decision on how to clean it
+                def get_info(step, vocab):
+                               values = np.array(list(vocab.values()))
+                       print("There are " + str(values.shape[0]) + " words in this vocabulary")
+         most_common = nlargest(5, vocab, key = vocab.get)
+         print("The 5 most common words are " + str(most_common))
+                       least_common = nsmallest(5, vocab, key = vocab.get)
+                       print("The 5 least common words are " + str(least_common))
+                             for i in range(int(100/(step))):
+                             perc = int(step * (i + 1))
+                 print("The " + str(perc) + "th percentile is: " + str(np.percentile(values,perc)))
+                 print("\n")
+        # Cleave off words from the vocab if they aren't within given range
+        def clean_vocab(less_than, more_than, vocab):
+         to_remove = []
+         for word in vocab:
+                                 if int(vocab[word]) < less_than or int(vocab[word]) > more_than:
+                                 to_remove.append(word)
+                                 for key in to_remove:
+                                 del vocab[key]
+                   return vocab
+                  # Create tf_idf matrix from given global vocab and speeches
+                        def get_tf_idf(speeches, vocab):
+                         num_docs = len(speeches)
+                         num_words = len(vocab)
+                             W = np.zeros((num_docs, num_words))
+                                   vocabs = []
+                                   for i in range(num_docs):
+                                           vocabs.append(get_vocab(speeches, check_all=False, specific=i))
+                                          4/18/2020 HW2_P4_JeffBraun
+                                          localhost:8888/nbconvert/html/ML/HW2/HW2_P4_JeffBraun.ipynb?download=false 4/29
+                                           index = 0
+                                           for word in vocab:
+                                           for i in range(num_docs):
+         speech_vocab = vocabs[i]
+         if word in speech_vocab:
+         W[i,index] = speech_vocab[word]
+                       else:
+                             W[i,index] = 0
+                                       index += 1
+                                       t = np.log(num_docs / np.count_nonzero(W,axis=0))
+                                       t = np.repeat(np.expand_dims(t,axis=0),num_docs,axis=0)
+                                       W = np.multiply(W,t)
+                                       return W
+        vocab = get_vocab(speeches)
+        get_info(1, vocab)
+            vocab = clean_vocab(50, 1000, vocab)
+            get_info(5, vocab)
+            tf_idf = get_tf_idf(speeches, vocab)
+
+      </pre>
+    </div>
 
     <script type="text/javascript">
       document.documentElement.style.cursor= "wait";
-      setTimeout(function () {window.location.href='question7.html';},1200);
+      setTimeout(function () {window.location.href='question7.html';},4200);
     </script>
 
   </body>
